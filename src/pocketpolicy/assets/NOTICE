@@ -1,0 +1,4 @@
+so101_new_calib.urdf is copied unmodified from TheRobotStudio/SO-ARM100
+(https://github.com/TheRobotStudio/SO-ARM100, commit 5f6d2b8,
+Simulation/SO101/so101_new_calib.urdf), licensed under the Apache License 2.0.
+Only its kinematic tree is used; the referenced STL meshes are not included.
