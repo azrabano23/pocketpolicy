@@ -73,6 +73,25 @@ def cmd_campaign(a) -> int:
     return 0
 
 
+def cmd_ablate(a) -> int:
+    """Controlled DAgger ablation: same architectures, rounds 0 vs N, several seeds."""
+    from loopgraph.ledger import record
+
+    L = Ledger(a.ledger)
+    done = {(tuple(sorted(e.params.items()))) for e in L.entries("dagger_ablation")}
+    for width, depth in ((32, 2), (64, 2), (64, 3)):
+        for dagger in (0, 4):
+            for seed in range(a.seeds):
+                p = {"width": width, "depth": depth, "H": 1, "dagger": dagger, "seed": seed}
+                if tuple(sorted(p.items())) in done:
+                    continue
+                m, k = execute({x: v for x, v in p.items() if x != "seed"}, seed, a.cache)
+                record(L, "dagger_ablation", p, m, GATES, keys=k, decided_by="design",
+                       rationale="fixed ablation grid")
+                print(p, f"success {m['success']:.3f}", flush=True)
+    return 0
+
+
 def cmd_emit(a) -> int:
     p = {**DEFAULTS, "width": a.width, "depth": a.depth, "H": a.H, "dagger": a.dagger,
          "seed": a.seed}
@@ -101,6 +120,11 @@ def main(argv=None) -> int:
     s.add_argument("--batch", type=int, default=4)
     s.add_argument("--seed", type=int, default=0)
     s.set_defaults(fn=cmd_campaign)
+
+    s = sub.add_parser("ablate")
+    s.add_argument("--ledger", default="results/ledger.jsonl")
+    s.add_argument("--seeds", type=int, default=3)
+    s.set_defaults(fn=cmd_ablate)
 
     s = sub.add_parser("emit")
     for k, d in (("width", 64), ("depth", 3), ("H", 4), ("dagger", 4), ("seed", 0)):
