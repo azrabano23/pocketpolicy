@@ -21,7 +21,8 @@ def test_pan_rotates_about_vertical():
     q = np.zeros((2, 6))
     q[1, 0] = 0.7
     p = a.tcp(q)
-    assert np.isclose(np.hypot(*p[0, :2]), np.hypot(*p[1, :2]), atol=2e-3)
+    c = a.joints["shoulder_pan"].T[:2, 3]  # the pan axis sits 3.9 cm forward of base_link
+    assert np.isclose(np.hypot(*(p[0, :2] - c)), np.hypot(*(p[1, :2] - c)), atol=1e-6)
     assert np.isclose(p[0, 2], p[1, 2])
 
 
