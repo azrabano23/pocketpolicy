@@ -1,0 +1,12 @@
+[
+ {"id": "teacher", "experiment": "distill", "metric": "teacher_success", "value": 0.985, "tol": 0.0005,
+  "text": "teacher succeeds on 98.5% of held-out episodes"},
+ {"id": "small", "experiment": "distill", "metric": "success", "value": 0.905, "tol": 0.0005,
+  "params": {"width": 64, "depth": 2, "H": 1, "dagger": 2}, "text": "6.4 KB student: 90.5%"},
+ {"id": "small_kb", "experiment": "distill", "metric": "flash_kb", "value": 6.38, "tol": 0.01,
+  "params": {"width": 64, "depth": 2, "H": 1, "dagger": 2}, "text": "6.4 KB"},
+ {"id": "best", "experiment": "distill", "metric": "success", "value": 0.97, "tol": 0.0005,
+  "select": "best:success", "text": "best student: 97%"},
+ {"id": "dagger64x3", "experiment": "dagger_ablation", "metric": "success", "value": 0.87, "tol": 0.0005,
+  "params": {"width": 64, "depth": 3, "dagger": 4, "seed": 0}, "text": "64x3 with DAgger, seed 0"}
+]
