@@ -33,7 +33,7 @@ All numbers are from [`results/ledger.jsonl`](results/ledger.jsonl). They are ch
 | 64 × 3 | 0.562 | 0.873 | +0.312 |
 
 The Pareto frontier was found by a committee of planning agents (a Pareto-frontier walker and a
-random explorer) under a 24-run budget, through [loopgraph](../loopgraph). Two gates applied:
+random explorer) under a 24-run budget, through [loopgraph](https://github.com/azrabano23/loopgraph). Two gates applied:
 bit-exact C, and at most half a Cortex-M4's time at the control rate.
 
 ## What is real and what is not
@@ -51,7 +51,7 @@ bit-exact C, and at most half a Cortex-M4's time at the control rate.
 ## Use
 
 ```bash
-pip install -e ../loopgraph -e ".[test]"
+pip install -e ".[test]"
 pytest                                          # 21 tests
 pocketpolicy campaign --budget 24               # agents search width/depth/H/DAgger
 pocketpolicy ablate                             # the DAgger ablation

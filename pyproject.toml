@@ -7,7 +7,7 @@ name = "pocketpolicy"
 version = "0.1.0"
 description = "Distil robot foundation policies into int8 C that runs on the microcontroller already inside the arm."
 requires-python = ">=3.10"
-dependencies = ["numpy>=1.24", "loopgraph"]
+dependencies = ["numpy>=1.24", "loopgraph @ git+https://github.com/azrabano23/loopgraph"]
 
 [project.optional-dependencies]
 openpi = ["openpi-client"]
