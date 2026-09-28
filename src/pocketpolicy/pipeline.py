@@ -82,7 +82,7 @@ def deployed(student, calib):
     return DeployedPolicy.from_student(student["net"], calib)
 
 
-@node(version="2")
+@node(version="3")  # bumped: the C gate's emitter changed underneath this node
 def metrics(student, deployed, teacher_eval, calib, H, seed, eval_episodes):
     env, _ = _env()
     net = student["net"]
