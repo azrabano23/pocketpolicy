@@ -1,0 +1,17 @@
+{'width': 32, 'depth': 2, 'H': 1, 'dagger': 0, 'seed': 0} success 0.345
+{'width': 32, 'depth': 2, 'H': 1, 'dagger': 0, 'seed': 1} success 0.385
+{'width': 32, 'depth': 2, 'H': 1, 'dagger': 0, 'seed': 2} success 0.155
+{'width': 32, 'depth': 2, 'H': 1, 'dagger': 4, 'seed': 0} success 0.610
+{'width': 32, 'depth': 2, 'H': 1, 'dagger': 4, 'seed': 1} success 0.495
+{'width': 32, 'depth': 2, 'H': 1, 'dagger': 4, 'seed': 2} success 0.160
+{'width': 64, 'depth': 2, 'H': 1, 'dagger': 0, 'seed': 0} success 0.615
+{'width': 64, 'depth': 2, 'H': 1, 'dagger': 0, 'seed': 1} success 0.395
+{'width': 64, 'depth': 2, 'H': 1, 'dagger': 0, 'seed': 2} success 0.510
+{'width': 64, 'depth': 2, 'H': 1, 'dagger': 4, 'seed': 0} success 0.745
+{'width': 64, 'depth': 2, 'H': 1, 'dagger': 4, 'seed': 1} success 0.810
+{'width': 64, 'depth': 2, 'H': 1, 'dagger': 4, 'seed': 2} success 0.700
+{'width': 64, 'depth': 3, 'H': 1, 'dagger': 0, 'seed': 0} success 0.610
+{'width': 64, 'depth': 3, 'H': 1, 'dagger': 0, 'seed': 1} success 0.595
+{'width': 64, 'depth': 3, 'H': 1, 'dagger': 0, 'seed': 2} success 0.480
+{'width': 64, 'depth': 3, 'H': 1, 'dagger': 4, 'seed': 0} success 0.870
+{'width': 64, 'depth': 3, 'H': 1, 'dagger': 4, 'seed': 1} success 0.855
