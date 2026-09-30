@@ -128,8 +128,22 @@ def label(teacher: Teacher, s: State, H: int) -> tuple[np.ndarray, np.ndarray]:
 
 def distill(env: PickPlace, teacher: Teacher, width: int, depth: int, H: int,
             dagger_rounds: int, episodes: int = 64, epochs: int = 40, seed: int = 0,
-            exec_k: int | None = None) -> tuple[MLP, dict]:
+            exec_k: int | None = None, robust=None,
+            teacher_view: str = "now") -> tuple[MLP, dict]:
+    """Behaviour cloning, then DAgger rounds.
+
+    `robust` (a `realworld.Perturb`) turns on domain-randomised DAgger: every
+    training episode draws its own sensing and servo errors, up to a little
+    beyond `robust`, and runs with command-relative goals. The student acts on
+    the corrupted observation and is trained on what it saw; the teacher
+    labels from `teacher_view` (`realworld.TEACHER_VIEWS`): the true state now
+    (privileged distillation, the default), the true state the reading came
+    from, or the same corrupted observation.
+    """
     exec_k = exec_k or max(1, H // 2)
+    if robust is not None:
+        return _distill_robust(env, teacher, width, depth, H, dagger_rounds, episodes,
+                               epochs, seed, exec_k, robust, teacher_view)
     teacher_policy = lambda s: teacher.chunk(s, 1)
     _, states = rollout(env, teacher_policy, episodes, seed, 1, record=True)
     X, Y = label(teacher, concat_states(states), H)
@@ -154,3 +168,39 @@ def distill(env: PickPlace, teacher: Teacher, width: int, depth: int, H: int,
         losses.append(net.fit(X, Y, max(10, epochs // 2), seed=seed + r + 1))
         sizes.append(len(X))
     return net, {"loss": losses[-1], "samples": sizes[-1], "rounds": dagger_rounds}
+
+
+def _distill_robust(env, teacher, width, depth, H, dagger_rounds, episodes, epochs, seed,
+                    exec_k, robust, view):
+    from .realworld import labels, privileged, rollout_real, sample
+
+    prng = np.random.default_rng([seed, 31])
+    expert = privileged(teacher, H, view)
+
+    def collect(policy, run_seed, k):
+        _, trace = rollout_real(env, policy, episodes, run_seed, k,
+                                sample(robust, episodes, prng), cmd_relative=True,
+                                record=True, sees_truth=True)
+        return labels(teacher, trace, H, view)
+
+    X, Y = collect(privileged(teacher, 1, view), seed, 1)
+    net = MLP.init(X.shape[1], width, depth, Y.shape[1], Norm.fit(X), Norm.fit(Y), H, seed)
+    losses = [net.fit(X, Y, epochs, seed=seed)]
+    sizes = [len(X)]
+    for r in range(dagger_rounds):
+        beta = 0.5 ** (r + 1)
+        rng = np.random.default_rng(seed + 1000 + r)
+
+        def mixed(o, s, r, rng=rng, beta=beta):
+            a = net.policy(o)
+            use_t = rng.random(s.B) < beta
+            if use_t.any():
+                a[use_t] = expert(o, s, r)[use_t]
+            return a
+
+        Xr, Yr = collect(mixed, seed + 100 + r, exec_k)
+        X, Y = np.concatenate([X, Xr]), np.concatenate([Y, Yr])
+        losses.append(net.fit(X, Y, max(10, epochs // 2), seed=seed + r + 1))
+        sizes.append(len(X))
+    return net, {"loss": losses[-1], "samples": sizes[-1], "rounds": dagger_rounds,
+                 "robust": True, "teacher_view": view}
