@@ -57,9 +57,11 @@ def _ring(rng: np.random.Generator, n: int) -> np.ndarray:
 
 
 class PickPlace:
-    def __init__(self, arm: Arm | None = None, noise: float = 0.004):
+    def __init__(self, arm: Arm | None = None, noise: float = 0.004,
+                 grasp_radius: float | np.ndarray = GRASP_RADIUS):
         self.arm = arm or Arm()
         self.noise = noise
+        self.grasp_radius = grasp_radius  # scalar, or one per episode [B]
         self.q0 = self._rest_pose()
 
     def _rest_pose(self) -> np.ndarray:
@@ -94,7 +96,7 @@ class PickPlace:
         tcp = self.arm.tcp(q)
 
         grip = q[:, 5]
-        near = np.linalg.norm(tcp - s.obj, axis=1) < GRASP_RADIUS
+        near = np.linalg.norm(tcp - s.obj, axis=1) < self.grasp_radius
         grab = live & ~s.held & (grip < 0.4) & near
         drop = live & s.held & (grip > 0.7)
         held = (s.held | grab) & ~drop
