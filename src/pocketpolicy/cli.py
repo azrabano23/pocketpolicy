@@ -2,6 +2,7 @@
 
     pocketpolicy campaign --budget 24 --planner committee
     pocketpolicy emit --width 64 --depth 3 --H 4 --dagger 4 -o out/
+    pocketpolicy sim2real --seeds 2 --jobs 4
 """
 
 from __future__ import annotations
@@ -106,6 +107,24 @@ def cmd_emit(a) -> int:
     return 0
 
 
+def cmd_sim2real(a) -> int:
+    """Deployed policies under assumed real-world errors; writes JSON and the README block."""
+    import json
+
+    from . import sim2real
+
+    out = Path(a.out)
+    if a.render_only:
+        res = json.loads(out.read_text())
+    else:
+        res = sim2real.run(a.seeds, a.episodes, a.cache, a.jobs, log=lambda m: print(m, flush=True))
+        sim2real.save(res, out)
+    if a.readme:
+        sim2real.update_readme(Path(a.readme), res)
+    print(sim2real.render(res))
+    return 0
+
+
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(prog="pocketpolicy")
     p.add_argument("--cache", default=".loopgraph/cache")
@@ -132,6 +151,15 @@ def main(argv=None) -> int:
     s.add_argument("--name", default="pocket")
     s.add_argument("-o", "--out", default="out")
     s.set_defaults(fn=cmd_emit)
+
+    s = sub.add_parser("sim2real")
+    s.add_argument("--seeds", type=int, default=2)
+    s.add_argument("--episodes", type=int, default=400)
+    s.add_argument("--jobs", type=int, default=1)
+    s.add_argument("-o", "--out", default="results/sim2real.json")
+    s.add_argument("--readme", default="README.md")
+    s.add_argument("--render-only", action="store_true", help="re-render README from --out")
+    s.set_defaults(fn=cmd_sim2real)
 
     a = p.parse_args(argv)
     return a.fn(a)

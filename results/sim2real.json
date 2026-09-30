@@ -1,0 +1,296 @@
+{
+ "eval_episodes": 400,
+ "eval_seed": 10000,
+ "seeds": 2,
+ "robust_preset": "realistic",
+ "robust_scale": 1.25,
+ "presets": {
+  "ideal": {
+   "det_noise": 0.0,
+   "det_bias": 0.0,
+   "latency": 0.0,
+   "joint_cal": 0.0,
+   "sag": 0.0,
+   "grasp_radius": 0.02,
+   "flag_err": 0.0
+  },
+  "realistic": {
+   "det_noise": 0.003,
+   "det_bias": 0.005,
+   "latency": 2.0,
+   "joint_cal": 0.026179938779914945,
+   "sag": 0.017453292519943295,
+   "grasp_radius": 0.015,
+   "flag_err": 0.02
+  },
+  "pessimistic": {
+   "det_noise": 0.005,
+   "det_bias": 0.01,
+   "latency": 3.0,
+   "joint_cal": 0.05235987755982989,
+   "sag": 0.03490658503988659,
+   "grasp_radius": 0.01,
+   "flag_err": 0.05
+  }
+ },
+ "conditions": [
+  "ideal",
+  "ideal + fix",
+  "sag 1°, no fix",
+  "sag 1° + fix",
+  "realistic, no fix",
+  "realistic + fix",
+  "pessimistic + fix"
+ ],
+ "teacher": {
+  "ideal": 0.99,
+  "ideal + fix": 0.9475,
+  "sag 1°, no fix": 0.0,
+  "sag 1° + fix": 0.945,
+  "realistic, no fix": 0.0,
+  "realistic + fix": 0.61,
+  "pessimistic + fix": 0.0
+ },
+ "rows": [
+  {
+   "config": "144 KB",
+   "training": "published",
+   "seed": 0,
+   "flash_kb": 143.73,
+   "success": {
+    "ideal": 0.955,
+    "ideal + fix": 0.9475,
+    "sag 1°, no fix": 0.02,
+    "sag 1° + fix": 0.945,
+    "realistic, no fix": 0.0175,
+    "realistic + fix": 0.7975,
+    "pessimistic + fix": 0.1675
+   }
+  },
+  {
+   "config": "144 KB",
+   "training": "published",
+   "seed": 1,
+   "flash_kb": 143.73,
+   "success": {
+    "ideal": 0.965,
+    "ideal + fix": 0.965,
+    "sag 1°, no fix": 0.02,
+    "sag 1° + fix": 0.965,
+    "realistic, no fix": 0.0125,
+    "realistic + fix": 0.8625,
+    "pessimistic + fix": 0.255
+   }
+  },
+  {
+   "config": "144 KB",
+   "training": "robust, teacher sees truth",
+   "seed": 0,
+   "flash_kb": 143.73,
+   "success": {
+    "ideal": 0.2725,
+    "ideal + fix": 0.265,
+    "sag 1°, no fix": 0.005,
+    "sag 1° + fix": 0.28,
+    "realistic, no fix": 0.0025,
+    "realistic + fix": 0.27,
+    "pessimistic + fix": 0.095
+   }
+  },
+  {
+   "config": "144 KB",
+   "training": "robust, teacher sees truth",
+   "seed": 1,
+   "flash_kb": 143.73,
+   "success": {
+    "ideal": 0.3275,
+    "ideal + fix": 0.335,
+    "sag 1°, no fix": 0.0025,
+    "sag 1° + fix": 0.315,
+    "realistic, no fix": 0.005,
+    "realistic + fix": 0.31,
+    "pessimistic + fix": 0.1125
+   }
+  },
+  {
+   "config": "144 KB",
+   "training": "robust, teacher sees truth at reading",
+   "seed": 0,
+   "flash_kb": 143.73,
+   "success": {
+    "ideal": 0.7975,
+    "ideal + fix": 0.7875,
+    "sag 1°, no fix": 0.0,
+    "sag 1° + fix": 0.8125,
+    "realistic, no fix": 0.0,
+    "realistic + fix": 0.58,
+    "pessimistic + fix": 0.135
+   }
+  },
+  {
+   "config": "144 KB",
+   "training": "robust, teacher sees truth at reading",
+   "seed": 1,
+   "flash_kb": 143.73,
+   "success": {
+    "ideal": 0.58,
+    "ideal + fix": 0.6025,
+    "sag 1°, no fix": 0.0,
+    "sag 1° + fix": 0.5725,
+    "realistic, no fix": 0.0,
+    "realistic + fix": 0.3725,
+    "pessimistic + fix": 0.0875
+   }
+  },
+  {
+   "config": "144 KB",
+   "training": "robust, teacher sees reading",
+   "seed": 0,
+   "flash_kb": 143.73,
+   "success": {
+    "ideal": 0.9775,
+    "ideal + fix": 0.9675,
+    "sag 1°, no fix": 0.255,
+    "sag 1° + fix": 0.97,
+    "realistic, no fix": 0.0225,
+    "realistic + fix": 0.81,
+    "pessimistic + fix": 0.0575
+   }
+  },
+  {
+   "config": "144 KB",
+   "training": "robust, teacher sees reading",
+   "seed": 1,
+   "flash_kb": 143.73,
+   "success": {
+    "ideal": 0.965,
+    "ideal + fix": 0.955,
+    "sag 1°, no fix": 0.275,
+    "sag 1° + fix": 0.9675,
+    "realistic, no fix": 0.0125,
+    "realistic + fix": 0.795,
+    "pessimistic + fix": 0.09
+   }
+  },
+  {
+   "config": "6.4 KB",
+   "training": "published",
+   "seed": 0,
+   "flash_kb": 6.38,
+   "success": {
+    "ideal": 0.8525,
+    "ideal + fix": 0.87,
+    "sag 1°, no fix": 0.0,
+    "sag 1° + fix": 0.87,
+    "realistic, no fix": 0.0,
+    "realistic + fix": 0.5475,
+    "pessimistic + fix": 0.09
+   }
+  },
+  {
+   "config": "6.4 KB",
+   "training": "published",
+   "seed": 1,
+   "flash_kb": 6.38,
+   "success": {
+    "ideal": 0.8025,
+    "ideal + fix": 0.8,
+    "sag 1°, no fix": 0.0,
+    "sag 1° + fix": 0.7975,
+    "realistic, no fix": 0.0,
+    "realistic + fix": 0.495,
+    "pessimistic + fix": 0.0725
+   }
+  },
+  {
+   "config": "6.4 KB",
+   "training": "robust, teacher sees truth",
+   "seed": 0,
+   "flash_kb": 6.38,
+   "success": {
+    "ideal": 0.0575,
+    "ideal + fix": 0.0525,
+    "sag 1°, no fix": 0.0,
+    "sag 1° + fix": 0.045,
+    "realistic, no fix": 0.0,
+    "realistic + fix": 0.0625,
+    "pessimistic + fix": 0.02
+   }
+  },
+  {
+   "config": "6.4 KB",
+   "training": "robust, teacher sees truth",
+   "seed": 1,
+   "flash_kb": 6.38,
+   "success": {
+    "ideal": 0.0375,
+    "ideal + fix": 0.025,
+    "sag 1°, no fix": 0.0,
+    "sag 1° + fix": 0.0125,
+    "realistic, no fix": 0.0,
+    "realistic + fix": 0.0275,
+    "pessimistic + fix": 0.0075
+   }
+  },
+  {
+   "config": "6.4 KB",
+   "training": "robust, teacher sees truth at reading",
+   "seed": 0,
+   "flash_kb": 6.38,
+   "success": {
+    "ideal": 0.3575,
+    "ideal + fix": 0.3325,
+    "sag 1°, no fix": 0.0,
+    "sag 1° + fix": 0.325,
+    "realistic, no fix": 0.0,
+    "realistic + fix": 0.2425,
+    "pessimistic + fix": 0.0325
+   }
+  },
+  {
+   "config": "6.4 KB",
+   "training": "robust, teacher sees truth at reading",
+   "seed": 1,
+   "flash_kb": 6.38,
+   "success": {
+    "ideal": 0.4925,
+    "ideal + fix": 0.4675,
+    "sag 1°, no fix": 0.0,
+    "sag 1° + fix": 0.495,
+    "realistic, no fix": 0.0,
+    "realistic + fix": 0.3675,
+    "pessimistic + fix": 0.0725
+   }
+  },
+  {
+   "config": "6.4 KB",
+   "training": "robust, teacher sees reading",
+   "seed": 0,
+   "flash_kb": 6.38,
+   "success": {
+    "ideal": 0.715,
+    "ideal + fix": 0.63,
+    "sag 1°, no fix": 0.0025,
+    "sag 1° + fix": 0.64,
+    "realistic, no fix": 0.0,
+    "realistic + fix": 0.4275,
+    "pessimistic + fix": 0.0475
+   }
+  },
+  {
+   "config": "6.4 KB",
+   "training": "robust, teacher sees reading",
+   "seed": 1,
+   "flash_kb": 6.38,
+   "success": {
+    "ideal": 0.8075,
+    "ideal + fix": 0.79,
+    "sag 1°, no fix": 0.0025,
+    "sag 1° + fix": 0.79,
+    "realistic, no fix": 0.0,
+    "realistic + fix": 0.5575,
+    "pessimistic + fix": 0.0525
+   }
+  }
+ ]
+}

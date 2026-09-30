@@ -107,3 +107,15 @@ def test_robust_distill_is_off_by_default_and_runs(env_teacher):
     assert info["robust"] and info["teacher_view"] == "now"
     assert np.isfinite(net.layers[0][0]).all()
 
+
+def test_readme_block_is_rendered_from_results():
+    import json
+    from pathlib import Path
+
+    from pocketpolicy import sim2real
+
+    root = Path(__file__).resolve().parents[1]
+    res = json.loads((root / "results" / "sim2real.json").read_text())
+    assert sim2real.render(res) in (root / "README.md").read_text()
+    assert res["conditions"] == list(sim2real.CONDITIONS)
+    assert res["eval_episodes"] == 400
